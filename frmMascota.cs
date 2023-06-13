@@ -107,6 +107,16 @@ namespace ABMMascotas
             }
         }
 
+        private void limpiarForm()
+        {
+            txtCodigo.Text = string.Empty;
+            txtNombre.Text = string.Empty;
+            cboEspecie.SelectedIndex = -1;
+            rbtMacho.Checked = false;
+            rbtHembra.Checked = false;
+            dtpFechaNacimiento.Value = DateTime.Now;
+        }
+
         private void btnSalir_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Desea salir del programa?", "Salir", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes) 
@@ -122,6 +132,7 @@ namespace ABMMascotas
         {
             habilitar(true);
         }
+
 
         private void btnGrabar_Click(object sender, EventArgs e)
         {
@@ -140,14 +151,24 @@ namespace ABMMascotas
             }
             mascota.FechaNacimiento = dtpFechaNacimiento.Value;
 
-            //insert usando parámetros
-            string insertQuery = "INSERT INTO Mascotas(nombre, especie, sexo, fechaNacimiento) " +
-                                                "VALUES(@nombre, @especie, @sexo, @fechaNacimiento)";
-
-            SqlCommand = new SqlCommand(insertQuery, connection);
-
+            //insert usando los parametros dentro del query
+            string insertQuery = $"INSERT INTO Mascotas(nombre, especie, sexo, fechaNacimiento) " +
+                $"VALUES('{mascota.Nombre}', '{mascota.Especie}', '{mascota.Sexo}', '{mascota.FechaNacimiento.ToString("yyyy/MM/dd")}')";
 
             DBconn.IUD(insertQuery);
+            
+            MessageBox.Show("Se cargo correctamente la mascota!", "Cargado!", MessageBoxButtons.OK);
+            // vuelvo a cargar la lista de items lstMascotas
+            cargaLista(lstMascotas, "Mascotas");
+            limpiarForm(); // para dejar nuevamente el form vacio
+
+
+            // vuelvo a inhabilitar los campos
+            habilitar(false);
+            
+            //SqlCommand = new SqlCommand(insertQuery, connection);
+
+
         }
 
         private void lstMascotas_SelectedIndexChanged(object sender, EventArgs e)
