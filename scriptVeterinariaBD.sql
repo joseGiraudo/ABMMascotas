@@ -39,6 +39,6 @@ INSERT [dbo].[Especies] ([nombreEspecie]) VALUES (N'Gato')
 INSERT [dbo].[Especies] ([nombreEspecie]) VALUES (N'Reptil')
 INSERT [dbo].[Especies] ([nombreEspecie]) VALUES (N'Ave')
 GO
-INSERT [dbo].[Mascotas] ([codigo], [nombre], [especie], [sexo], [fechaNacimiento]) VALUES (N'Boby', 1, 1, CAST(N'2020-10-10' AS Date))
-INSERT [dbo].[Mascotas] ([codigo], [nombre], [especie], [sexo], [fechaNacimiento]) VALUES (N'Michi', 3, 2, CAST(N'2020-10-01' AS Date))
+INSERT [dbo].[Mascotas] ([nombre], [especie], [sexo], [fechaNacimiento]) VALUES (N'Boby', 1, 1, CAST(N'2020-10-10' AS Date))
+INSERT [dbo].[Mascotas] ([nombre], [especie], [sexo], [fechaNacimiento]) VALUES (N'Michi', 3, 2, CAST(N'2020-10-01' AS Date))
 GO
