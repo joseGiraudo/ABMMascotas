@@ -131,40 +131,55 @@ namespace ABMMascotas
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             habilitar(true);
+            limpiarForm();
+            lstMascotas.ClearSelected();
         }
 
 
         private void btnGrabar_Click(object sender, EventArgs e)
         {
-            //valida datos...
+            bool valido = true;
 
-            //crear objeto
-            Mascota mascota = new Mascota();
-            mascota.Nombre = txtNombre.Text;
-            mascota.Especie = Convert.ToInt32(cboEspecie.SelectedValue);
-            if (rbtMacho.Checked)
+            //valida datos basico
+            if (txtNombre.Text.Length < 1 || String.IsNullOrEmpty(txtNombre.Text) ||
+                !rbtHembra.Checked || !rbtMacho.Checked)
             {
-                mascota.Sexo = 1;
-            } else if (rbtHembra.Checked)
-            {
-                mascota.Sexo = 2;
+                valido = false;
             }
-            mascota.FechaNacimiento = dtpFechaNacimiento.Value;
-
-            //insert usando los parametros dentro del query
-            string insertQuery = $"INSERT INTO Mascotas(nombre, especie, sexo, fechaNacimiento) " +
-                $"VALUES('{mascota.Nombre}', '{mascota.Especie}', '{mascota.Sexo}', '{mascota.FechaNacimiento.ToString("yyyy/MM/dd")}')";
-
-            DBconn.IUD(insertQuery);
             
-            MessageBox.Show("Se cargo correctamente la mascota!", "Cargado!", MessageBoxButtons.OK);
-            // vuelvo a cargar la lista de items lstMascotas
-            cargaLista(lstMascotas, "Mascotas");
-            limpiarForm(); // para dejar nuevamente el form vacio
+
+            if (valido)
+            {
+                    //crear objeto
+                Mascota mascota = new Mascota();
+                mascota.Nombre = txtNombre.Text;
+                mascota.Especie = Convert.ToInt32(cboEspecie.SelectedValue);
+                if (rbtMacho.Checked)
+                {
+                    mascota.Sexo = 1;
+                } else if (rbtHembra.Checked)
+                {
+                    mascota.Sexo = 2;
+                }
+                mascota.FechaNacimiento = dtpFechaNacimiento.Value;
+
+                //insert usando los parametros dentro del query
+                string insertQuery = $"INSERT INTO Mascotas(nombre, especie, sexo, fechaNacimiento) " +
+                    $"VALUES('{mascota.Nombre}', '{mascota.Especie}', '{mascota.Sexo}', '{mascota.FechaNacimiento.ToString("yyyy/MM/dd")}')";
+
+                DBconn.IUD(insertQuery);
+            
+                MessageBox.Show("Se cargo correctamente la mascota!", "Cargado!", MessageBoxButtons.OK);
+                // vuelvo a cargar la lista de items lstMascotas
+                cargaLista(lstMascotas, "Mascotas");
+                limpiarForm(); // para dejar nuevamente el form vacio
 
 
-            // vuelvo a inhabilitar los campos
-            habilitar(false);
+                // vuelvo a inhabilitar los campos
+                habilitar(false);
+            } else {
+                MessageBox.Show("Debes completar todos los campos correctamente", "Error de validacion de datos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             
             //SqlCommand = new SqlCommand(insertQuery, connection);
 
